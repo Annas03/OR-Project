@@ -1,55 +1,14 @@
-// Assuming you have the arrival time and service time data available in separate arrays
-const arrivalTimes = [9, 9, 10, 10, 11, 11, 12, 12, 13, 13];
-const serviceTimes = [10, 8, 12, 10, 9, 7, 11, 10, 8, 9, 5];
-
 // Step 2: Chi-Square Testing
-// Divide the arrival time and service time data into appropriate intervals or categories
-// You can use a function to define the intervals based on your specific requirements
-function createIntervals(data, intervalSize) {
-  const min = Math.min(...data);
-  const max = Math.max(...data);
-  const numIntervals = Math.ceil((max - min) / intervalSize);
-  const intervals = [];
 
-  for (let i = 0; i < numIntervals; i++) {
-    const lowerBound = min + i * intervalSize;
-    const upperBound = min + (i + 1) * intervalSize;
-    intervals.push({ lowerBound, upperBound });
-  }
-
-  return intervals;
-}
-
-// Define the interval size for dividing the data
-const intervalSize = 2;
-
-// Divide the arrival time and service time data into intervals
-const arrivalTimeIntervals = createIntervals(arrivalTimes, intervalSize);
-const serviceTimeIntervals = createIntervals(serviceTimes, intervalSize);
-
-// Calculate the observed frequencies for each interval
-function calculateObservedFrequencies(data, intervals) {
-  const observedFrequencies = new Array(intervals.length).fill(0);
-
-  data.forEach((value) => {
-    for (let i = 0; i < intervals.length; i++) {
-      const { lowerBound, upperBound } = intervals[i];
-      if (value >= lowerBound && value < upperBound) {
-        observedFrequencies[i]++;
-        break;
-      }
-    }
-  });
-
-  return observedFrequencies;
-}
-
-// Calculate the observed frequencies for arrival time and service time data
-const observedArrivalTimeFrequencies = calculateObservedFrequencies(arrivalTimes, arrivalTimeIntervals);
-const observedServiceTimeFrequencies = calculateObservedFrequencies(serviceTimes, serviceTimeIntervals);
+const ObservedarrivalTimes = [9, 9, 10, 10, 11, 11, 12, 12, 13, 13];
+const ObservedserviceTimes = [10, 8, 12, 10, 9, 7, 11, 10, 8, 9, 5];
 
 // Define the expected frequencies based on a theoretical distribution (e.g., uniform distribution)
 // You can choose the appropriate distribution based on your requirements and assumptions
+
+function expectedFrequency(observed){
+    
+}
 
 const expectedArrivalTimeFrequencies = [6, 4, 8, 12, 10, 14, 8, 6, 7, 11];
 const expectedServiceTimeFrequencies = [6, 5, 4, 7, 1, 5, 7, 9, 11, 2];
