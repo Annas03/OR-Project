@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Operations Research Project</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script type="module" src="chiSquareTest.js"></script>
+</head>
+
+<body class="bg-gray-100">
+  <div class="container mx-auto py-8 px-4">
+    <h1 class="text-2xl font-bold mb-4">Operations Research Project</h1>
+
+    <!-- Step 1: Chi-Square Testing -->
+    <div class="bg-white rounded-lg shadow-md p-4 mb-8">
+      <h2 class="text-lg font-semibold mb-4">Step 1: Chi-Square Testing</h2>
+      <div class="flex flex-wrap -mx-2">
+        <div class="w-full sm:w-1/2 px-2 mb-4">
+          <canvas id="Arrival Time Chi-Square Test"></canvas>
+          <p class="text-lg text-center">Arrival Time</p>
+        </div>
+        <div class="w-full sm:w-1/2 px-2 mb-4">
+          <canvas id="Service Time Chi-Square Test"></canvas>
+          <p class="text-lg text-center">Service Time</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2: Queuing Models -->
+    <div class="bg-white rounded-lg shadow-md p-4 mb-8">
+      <h2 class="text-lg font-semibold mb-4">Step 2: Queuing Models</h2>
+      <!-- Add your code for Step 2 here -->
+    </div>
+
+    <!-- Step 3: Displaying Results Graphically -->
+    <div class="bg-white rounded-lg shadow-md p-4">
+      <h2 class="text-lg font-semibold mb-4">Step 3: Displaying Results Graphically</h2>
+      <div class="flex flex-wrap -mx-2">
+        <div class="w-full sm:w-1/2 px-2 mb-4">
+          <canvas id="arrival-time-chart"></canvas>
+          <p class="text-lg text-center">Arrival Time</p>
+        </div>
+        <div class="w-full sm:w-1/2 px-2 mb-4">
+          <canvas id="service-time-chart"></canvas>
+          <p class="text-lg text-center">Service Time</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4"></script>
+  <script>
+    // Step 3: Displaying Results Graphically
+
+    // Example data for arrival time chart
+    const arrivalTimeData = {
+      labels: ["Interval 1", "Interval 2", "Interval 3", "Interval 4"],
+      observed: [5, 7, 4, 8],
+      expected: [6, 6, 6, 6]
+    };
+
+    // Example data for service time chart
+    const serviceTimeData = {
+      labels: ["Interval 1", "Interval 2", "Interval 3", "Interval 4"],
+      observed: [3, 9, 5, 6],
+      expected: [6, 5, 4, 7]
+    };
+
+    // Function to display bar plot
+    function displayBarPlot(canvasId, data) {
+      const ctx = document.getElementById(canvasId).getContext("2d");
+
+      new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels: data.labels,
+          datasets: [{
+              label: "Observed",
+              data: data.observed,
+              backgroundColor: "rgba(75, 192, 192, 0.6)",
+              borderColor: "rgba(75, 192, 192, 1)",
+              borderWidth: 1
+            },
+            {
+              label: "Expected",
+              data: data.expected,
+              backgroundColor: "rgba(255, 99, 132, 0.6)",
+              borderColor: "rgba(255, 99, 132, 1)",
+              borderWidth: 1
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            x: {
+              grid: {
+                display: false
+              }
+            },
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+    }
+
+    // Call the function to display arrival time chart
+    displayBarPlot("arrival-time-chart", arrivalTimeData);
+
+    // Call the function to display service time chart
+    displayBarPlot("service-time-chart", serviceTimeData);
+  </script>
+</body>
+
+</html>
