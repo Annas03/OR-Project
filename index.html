@@ -17,8 +17,11 @@
     <!-- Step 1: Chi-Square Testing -->
     <div class="bg-white rounded-lg shadow-md p-4 mb-8">
       <h2 class="text-lg text-center font-semibold mb-4">Chi-Square Testing</h2>
-      <input type="text" id="distribution" placeholder="Distribution.." class="border ml-8 rounded-lg p-2 w-1/5 focus:outline-none"/>
-      <button class="border rounded-lg p-1 mb-12 bg-gray-200 ml-4 w-16 text-xl" id="test">Test</button>
+      <input type="text" id="distribution" placeholder="Distribution.." class="border rounded-lg p-2 w-1/5 focus:outline-none"/>
+      <button class="border rounded-lg p-1 mb-8 bg-gray-200 ml-4 w-16 text-xl" id="test">Test</button>
+      <p id="chi-test" class="text-lg font-medium">Chi-square statistic = </p>
+      <p id="p-value" class="mb-4 text-lg font-medium">P-value = </p>
+      <h2 class="text-lg font-semibold mb-4">Displaying Results Graphically</h2>
       <div class="flex flex-wrap -mx-2">
         <div class="w-full sm:w-1/2 px-2 mb-4">
           <canvas id="Arrival Time Chi-Square Test"></canvas>

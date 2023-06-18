@@ -72,6 +72,8 @@ function chiSquareTest(observed, expected) {
 const result = chiSquareTest(ObservedarrivalTimes, expectedArrivalTimeFrequencies);
   
 // Interpret and display the results graphically
+document.getElementById('chi-test').innerHTML += result.statistic.toFixed(2)
+document.getElementById('p-value').innerHTML += result.pValue.toFixed(2)
 console.log("Chi-square statistic:", result.statistic);
 console.log("P-value:", result.pValue);
 
