@@ -1,17 +1,15 @@
 // Step 2: Chi-Square Testing
 
+const distributions = ['poisson', 'exponential', 'uniform', 'normal']
+
 const ObservedarrivalTimes = [9, 9, 10, 10, 11, 11, 12, 12, 13, 13];
 const ObservedserviceTimes = [10, 8, 12, 10, 9, 7, 11, 10, 8, 9, 5];
 
 // Define the expected frequencies based on a theoretical distribution (e.g., uniform distribution)
 // You can choose the appropriate distribution based on your requirements and assumptions
 
-function expectedFrequency(observed){
-    
-}
-
 const expectedArrivalTimeFrequencies = [6, 4, 8, 12, 10, 14, 8, 6, 7, 11];
-const expectedServiceTimeFrequencies = [6, 5, 4, 7, 1, 5, 7, 9, 11, 2];
+const expectedServiceTimeFrequencies = [6, 5, 4, 7, 1, 5, 7, 9, 11, 2, 9];
 
 // Perform the chi-square test using the observed and expected frequencies
 // You can use a library like math.js or write your own chi-square test function
@@ -42,15 +40,36 @@ function chiSquareTest(observed, expected) {
       pValue: pValue
     };
   }
-  
+
   function getPValueFromChiSquare(chiSquare, degreesOfFreedom) {
-    // Use an approximation formula to calculate the p-value
-    const gamma = math.gamma;
-    const pValue = gamma.incomplete(0.5 * degreesOfFreedom, 0.5 * chiSquare);
+    const gamma = function(n) {
+      if (n === 1) return 1;
+      return (n - 1) * gamma(n - 1);
+    };
+  
+    // Calculate the p-value using the chi-square distribution approximation
+    const pValue = 1 - chiSquareCDF(chiSquare, degreesOfFreedom);
+  
     return pValue;
   }
   
-const result = chiSquareTest(observedArrivalTimeFrequencies, expectedArrivalTimeFrequencies);
+  function chiSquareCDF(x, k) {
+    if (k <= 0 || x < 0) return NaN;
+  
+    let term = Math.exp(-0.5 * x);
+    let sum = term;
+    let i = 1;
+  
+    while (i < k / 2) {
+      term *= x / (2 * i);
+      sum += term;
+      i++;
+    }
+  
+    return sum;
+  }
+  
+const result = chiSquareTest(ObservedarrivalTimes, expectedArrivalTimeFrequencies);
   
 // Interpret and display the results graphically
 console.log("Chi-square statistic:", result.statistic);
@@ -113,7 +132,7 @@ function displayChiBarPlot(data, labels, title) {
 // Display the bar plot for arrival time frequencies
 displayChiBarPlot(
   {
-    observed: observedArrivalTimeFrequencies,
+    observed: ObservedarrivalTimes,
     expected: expectedArrivalTimeFrequencies,
   },
   ["Interval 1", "Interval 2", "Interval 3", "Interval 4"],
@@ -123,7 +142,7 @@ displayChiBarPlot(
 // Display the bar plot for service time frequencies
 displayChiBarPlot(
   {
-    observed: observedServiceTimeFrequencies,
+    observed: ObservedserviceTimes,
     expected: expectedServiceTimeFrequencies,
   },
   ["Interval 1", "Interval 2", "Interval 3", "Interval 4"],
