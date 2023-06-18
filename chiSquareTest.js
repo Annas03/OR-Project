@@ -15,17 +15,55 @@ function isDistValid(dist){
   return false
 }
 
+function factorial(n) {
+  if (n === 0 || n === 1) {
+    return 1;
+  }
+
+  let result = 1;
+  for (let i = 2; i <= n; i++) {
+    result *= i;
+  }
+
+  return result;
+}
+const expectedArrivalTime = []
+const expectedServiceTime = []
+
+function calculatePoissonExpectedFrequencies(observedFrequencies, lambda) {
+  const expectedFrequencies = [];
+
+  for (let k = 0; k < observedFrequencies.length; k++) {
+    const expected = (Math.exp(-lambda) * Math.pow(lambda, k)) / factorial(k);
+    expectedFrequencies.push(expected);
+  }
+
+  return expectedFrequencies;
+}
+
+function calculateUniformExpectedFrequencies(observedFrequencies) {
+  let sum = 0
+  for (let i=0; i < observedFrequencies.length; i++){
+    sum += observedFrequencies[i]
+  }
+  const num = sum/observedFrequencies.length
+  return Array(observedFrequencies.length).fill(num);
+}
+
+
 document.getElementById('test').addEventListener('click',() => {
   let dist = document.getElementById('distribution').value
   if(isDistValid(dist)){
     switch (dist) {
       case 'uniform':
-        
+        expectedArrivalTime =  calculateUniformExpectedFrequencies(ObservedarrivalTimes)
+        expectedServiceTime =  calculateUniformExpectedFrequencies(ObservedserviceTimes)
         break;
       case 'exponential':
         break;
-
       case 'poisson':
+        expectedArrivalTime =  calculatePoissonExpectedFrequencies(ObservedarrivalTimes, 5)
+        expectedServiceTime =  calculatePoissonExpectedFrequencies(ObservedserviceTimes, 5)
         break;
       case 'normal':
         break;
