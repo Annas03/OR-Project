@@ -8,6 +8,33 @@ const ObservedserviceTimes = [10, 8, 12, 10, 9, 7, 11, 10, 8, 9, 5];
 // Define the expected frequencies based on a theoretical distribution (e.g., uniform distribution)
 // You can choose the appropriate distribution based on your requirements and assumptions
 
+function isDistValid(dist){
+  for(let i=0; i<=3; i++){
+    if(distributions[i] == dist.toLowerCase()) return true  
+  }
+  return false
+}
+
+document.getElementById('test').addEventListener('click',() => {
+  let dist = document.getElementById('distribution').value
+  if(isDistValid(dist)){
+    switch (dist) {
+      case 'uniform':
+        
+        break;
+      case 'exponential':
+        break;
+
+      case 'poisson':
+        break;
+      case 'normal':
+        break;
+    }
+  }
+  document.getElementById('distribution').value = ''
+})
+
+
 const expectedArrivalTimeFrequencies = [6, 4, 8, 12, 10, 14, 8, 6, 7, 11];
 const expectedServiceTimeFrequencies = [6, 5, 4, 7, 1, 5, 7, 9, 11, 2, 9];
 
