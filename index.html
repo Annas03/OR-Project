@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Operations Research Project</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="/dist/output.css" rel="stylesheet">
   <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjs/9.2.0/math.js'></script>
   <script type="module" src="chiSquareTest.js" defer></script>
 </head>
@@ -38,7 +38,14 @@
     <!-- Step 2: Queuing Models -->
     <div class="bg-white rounded-lg shadow-md p-4 mb-8">
       <h2 class="text-lg font-semibold mb-4">Queuing Models</h2>
-      <!-- Add your code for Step 2 here -->
+      <ul class="flex justify-center">
+        <li class="px-4 py-1"><button id="mm1" class="hover:border-b hover:border-black">M/M/1</button></li>
+        <li class="px-4 py-1"><button id="mm2" class="hover:border-b hover:border-black">M/M/2</button></li>
+        <li class="px-4 py-1"><button id="mg1" class="hover:border-b hover:border-black">M/G/1</button></li>
+        <li class="px-4 py-1"><button id="mg2" class="hover:border-b hover:border-black">M/G/2</button></li>
+        <li class="px-4 py-1"><button id="gg1" class="hover:border-b hover:border-black">G/G/1</button></li>
+        <li class="px-4 py-1"><button id="gg2" class="hover:border-b hover:border-black">G/G/2</button></li>
+      </ul>
     </div>
 
     <!-- Step 3: Displaying Results Graphically -->
