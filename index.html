@@ -49,21 +49,25 @@
       </ul>
       <div class="my-8 flex justify-around w-1/2 mx-auto">
         <div class="border-r border-black w-2/4">
-          <input type="text" placeholder="lambda" class="p-2 border border-black w-3/4 rounded-xl mb-4"/>
-          <input type="text" placeholder="mew" class="p-2 border border-black w-3/4 rounded-xl mb-4"/>
+          <input type="text" id="lambda" placeholder="lambda" class="p-2 border border-black w-3/4 rounded-xl mb-4"/>
+          <input type="text" id="mew" placeholder="mew" class="p-2 border border-black w-3/4 rounded-xl mb-4"/>
+          <input type="text" id="max" placeholder="maximum" class="p-2 border border-black w-3/4 rounded-xl mb-4"/>
+          <input type="text" id="min" placeholder="minimum" class="p-2 border border-black w-3/4 rounded-xl mb-4"/>
+          
           <button id="calculate" class="rounded-xl bg-gray-500 text-white font-medium p-2 w-3/4">Calculate</button>
         </div>
         <div>
-          <p id="arrival-rate" class="text-lg font-medium">Arrival Rate : </p>
-          <p id="service-rate" class="text-lg font-medium">Service Rate : </p>
           <p id="Utilization" class="text-lg font-medium">Utilization Rate : </p>
-          <p id="queue-length" class="text-lg font-medium">AverageQueueLength : </p>
-          <p id="waiting-time" class="text-lg font-medium">AverageWaitingTime : </p>
+          <p id="queue-length-system" class="text-lg font-medium">AverageQueueLength(System) : </p>
+          <p id="queue-length-queue" class="text-lg font-medium">AverageQueueLength(Queue) : </p>
+          <p id="waiting-time-system" class="text-lg font-medium">AverageWaitingTime(System) : </p>
+          <p id="waiting-time-queue" class="text-lg font-medium">AverageWaitingTime(System) : </p>
         </div>
       </div>
     </div>
 
-    <!-- Step 3: Displaying Results Graphically -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4"></script>
+    <!-- Step 3: Displaying Results Graphically
     <div class="bg-white rounded-lg shadow-md p-4">
       <h2 class="text-lg font-semibold mb-4">Displaying Results Graphically</h2>
       <div class="flex flex-wrap -mx-2">
@@ -142,7 +146,7 @@
 
     // Call the function to display service time chart
     displayBarPlot("service-time-chart", serviceTimeData);
-  </script>
+  </script> -->
 </body>
 
 </html>

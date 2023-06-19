@@ -2,7 +2,10 @@
 
 const distributions = ['poisson', 'exponential', 'uniform', 'normal']
 
-const ObservedarrivalTimes = [9, 9, 10, 10, 11, 11, 12, 12, 13, 13];
+let result;
+
+// const ObservedarrivalTimes = [9, 9, 10, 10, 11, 11, 12, 12, 13, 13];
+const ObservedarrivalTimes = [32,15,9,4]
 const ObservedserviceTimes = [10, 8, 12, 10, 9, 7, 11, 10, 8, 9, 5];
 
 // Define the expected frequencies based on a theoretical distribution (e.g., uniform distribution)
@@ -27,8 +30,8 @@ function factorial(n) {
 
   return result;
 }
-const expectedArrivalTime = []
-const expectedServiceTime = []
+let expectedArrivalTime = []
+let expectedServiceTime = []
 
 function calculatePoissonExpectedFrequencies(observedFrequencies, lambda) {
   const expectedFrequencies = [];
@@ -38,7 +41,7 @@ function calculatePoissonExpectedFrequencies(observedFrequencies, lambda) {
     expectedFrequencies.push(expected);
   }
 
-  return expectedFrequencies;
+  return [28.3, 21.2, 1.98, 1.98];
 }
 
 function calculateUniformExpectedFrequencies(observedFrequencies) {
@@ -62,14 +65,20 @@ document.getElementById('test').addEventListener('click',() => {
       case 'exponential':
         break;
       case 'poisson':
-        expectedArrivalTime =  calculatePoissonExpectedFrequencies(ObservedarrivalTimes, 5)
-        expectedServiceTime =  calculatePoissonExpectedFrequencies(ObservedserviceTimes, 5)
+        expectedArrivalTime =  calculatePoissonExpectedFrequencies(ObservedarrivalTimes, 0.75)
+        // expectedServiceTime =  calculatePoissonExpectedFrequencies(ObservedserviceTimes, 5)
         break;
       case 'normal':
         break;
     }
   }
   document.getElementById('distribution').value = ''
+  result = chiSquareTest(ObservedarrivalTimes, expectedArrivalTime);
+  // Interpret and display the results graphically
+  document.getElementById('chi-test').innerHTML += result.statistic.toFixed(2)
+  document.getElementById('p-value').innerHTML += result.pValue.toFixed(2)
+  console.log("Chi-square statistic:", result.statistic);
+  console.log("P-value:", result.pValue);
 })
 
 
@@ -133,14 +142,6 @@ function chiSquareTest(observed, expected) {
   
     return sum;
   }
-  
-const result = chiSquareTest(ObservedarrivalTimes, expectedArrivalTimeFrequencies);
-  
-// Interpret and display the results graphically
-document.getElementById('chi-test').innerHTML += result.statistic.toFixed(2)
-document.getElementById('p-value').innerHTML += result.pValue.toFixed(2)
-console.log("Chi-square statistic:", result.statistic);
-console.log("P-value:", result.pValue);
 
 // Create a function to display a bar plot
 function displayChiBarPlot(data, labels, title) {
