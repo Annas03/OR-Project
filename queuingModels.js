@@ -100,30 +100,26 @@ function calculateMG2() {
   arrivalRate = Number(document.getElementById('lambda').value)
   min = Number(document.getElementById('min').value)
   max = Number(document.getElementById('max').value)
-  serviceRate = (min + max)/2
+  serviceRate = 1/((min + max)/2)
+  const cs = (Math.pow(min-max,2)/12)/Math.pow(1/serviceRate, 2)
 
   // Calculate utilization
   const utilization = arrivalRate / (2 * serviceRate);
 
-  // Estimate the second moment of service time for G/G/2 model
-  const serviceTimeSquared = serviceTimes.map((time) => time * time);
-  const secondMomentServiceTime =
-    serviceTimeSquared.reduce((a, b) => a + b, 0) / serviceTimeSquared.length;
+  // Estimate the average length of queue for G/G/2 model
+  const expaverageQueueLengthQueue = (calculatePo(2, utilization)*Math.pow((arrivalRate/serviceRate),2)*utilization)/(factorial(2)*Math.pow(1-utilization, 2));
+  const averageWaitingTimeQueue = (expaverageQueueLengthQueue / arrivalRate)*((1+cs)/2)
 
-  // Calculate average queue length and waiting time for M/G/2 model
-  const rhoSquared = utilization * utilization;
-  const averageQueueLength =
-    (rhoSquared * (1 + utilization)) / (1 - utilization) +
-    ((2 * utilization * utilization) / (1 - utilization)) *
-    (1 + (rhoSquared * (1 + utilization)) / (1 - utilization));
-  const averageWaitingTime = averageQueueLength / arrivalRate + secondMomentServiceTime / (2 * serviceRate * (1 - utilization));
+  const averageQueueLengthQueue = averageWaitingTimeQueue * arrivalRate
+  const averageWaitingTimeSystem = averageWaitingTimeQueue + (1/serviceRate)
+  const averageQueueLengthSystem = arrivalRate * averageWaitingTimeSystem
 
   return {
-    arrivalRate,
-    serviceRate,
     utilization,
-    averageQueueLength,
-    averageWaitingTime,
+    averageQueueLengthQueue,
+    averageQueueLengthSystem,
+    averageWaitingTimeSystem,
+    averageWaitingTimeQueue,
   };
 }
 
