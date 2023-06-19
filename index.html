@@ -8,6 +8,7 @@
   <link href="/dist/output.css" rel="stylesheet">
   <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjs/9.2.0/math.js'></script>
   <script type="module" src="chiSquareTest.js" defer></script>
+  <script type="module" src="queuingModels.js" defer></script>
 </head>
 
 <body class="bg-gray-100">
@@ -39,13 +40,27 @@
     <div class="bg-white rounded-lg shadow-md p-4 mb-8">
       <h2 class="text-lg font-semibold mb-4">Queuing Models</h2>
       <ul class="flex justify-center">
-        <li class="px-4 py-1"><button id="mm1" class="hover:border-b hover:border-black">M/M/1</button></li>
-        <li class="px-4 py-1"><button id="mm2" class="hover:border-b hover:border-black">M/M/2</button></li>
-        <li class="px-4 py-1"><button id="mg1" class="hover:border-b hover:border-black">M/G/1</button></li>
-        <li class="px-4 py-1"><button id="mg2" class="hover:border-b hover:border-black">M/G/2</button></li>
-        <li class="px-4 py-1"><button id="gg1" class="hover:border-b hover:border-black">G/G/1</button></li>
-        <li class="px-4 py-1"><button id="gg2" class="hover:border-b hover:border-black">G/G/2</button></li>
+        <li class="px-4 py-1"><button id="mm1" class="hover:border-b hover:border-black focus:border-b focus:border-black">M/M/1</button></li>
+        <li class="px-4 py-1"><button id="mm2" class="hover:border-b hover:border-black focus:border-b focus:border-black">M/M/2</button></li>
+        <li class="px-4 py-1"><button id="mg1" class="hover:border-b hover:border-black focus:border-b focus:border-black">M/G/1</button></li>
+        <li class="px-4 py-1"><button id="mg2" class="hover:border-b hover:border-black focus:border-b focus:border-black">M/G/2</button></li>
+        <li class="px-4 py-1"><button id="gg1" class="hover:border-b hover:border-black focus:border-b focus:border-black">G/G/1</button></li>
+        <li class="px-4 py-1"><button id="gg2" class="hover:border-b hover:border-black focus:border-b focus:border-black">G/G/2</button></li>
       </ul>
+      <div class="my-8 flex justify-around w-1/2 mx-auto">
+        <div class="border-r border-black w-2/4">
+          <input type="text" placeholder="lambda" class="p-2 border border-black w-3/4 rounded-xl mb-4"/>
+          <input type="text" placeholder="mew" class="p-2 border border-black w-3/4 rounded-xl mb-4"/>
+          <button id="calculate" class="rounded-xl bg-gray-500 text-white font-medium p-2 w-3/4">Calculate</button>
+        </div>
+        <div>
+          <p id="arrival-rate" class="text-lg font-medium">Arrival Rate : </p>
+          <p id="service-rate" class="text-lg font-medium">Service Rate : </p>
+          <p id="Utilization" class="text-lg font-medium">Utilization Rate : </p>
+          <p id="queue-length" class="text-lg font-medium">AverageQueueLength : </p>
+          <p id="waiting-time" class="text-lg font-medium">AverageWaitingTime : </p>
+        </div>
+      </div>
     </div>
 
     <!-- Step 3: Displaying Results Graphically -->
