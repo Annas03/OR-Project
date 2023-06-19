@@ -9,7 +9,7 @@ const serviceTimes = [10, 8, 12, 10, 9, 7, 11, 10, 8, 9, 7];
 
 // let arrivalRate = 1 / (arrivalTimes.reduce((a, b) => a + b, 0) / arrivalTimes.length);
 // let serviceRate = 1 / (serviceTimes.reduce((a, b) => a + b, 0) / serviceTimes.length);
-let arrivalRate, serviceRate;
+let arrivalRate, serviceRate, min, max;
 
 // M/M/1 Queue Model
 function calculateMM1() {
@@ -78,12 +78,12 @@ function calculateMG1() {
   arrivalRate = Number(document.getElementById('lambda').value)
   min = Number(document.getElementById('min').value)
   max = Number(document.getElementById('max').value)
-  serviceRate = (min + max)/2
+  serviceRate = 1/((min + max)/2)
 
   const utilization = arrivalRate / serviceRate;
-  const averageQueueLengthQueue = (Maht.pow(arrivalRate,2)*(Maht.pow(max-min, 2)/12)+Math.pow(utilization, 2)) / (2*(1-utilization))
+  const averageQueueLengthQueue = (Math.pow(arrivalRate,2)*(Math.pow(max-min, 2)/12)+Math.pow(utilization, 2)) / (2*(1-utilization))
   const averageWaitingTimeQueue = averageQueueLengthQueue/arrivalRate
-  const averageWaitingTimeSystem = averageWaitingTimeQueue + (1/utilization)
+  const averageWaitingTimeSystem = averageWaitingTimeQueue + (1/serviceRate)
   const averageQueueLengthSystem = averageWaitingTimeSystem*arrivalRate
 
   return {
