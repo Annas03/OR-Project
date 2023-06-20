@@ -292,7 +292,6 @@ document.getElementById('calculate').addEventListener('click', () => {
     case 'gg2':
       result = calculateGG2();
       break;
-  
     default:
       break;
   }
