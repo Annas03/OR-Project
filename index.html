@@ -9,34 +9,14 @@
   <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjs/9.2.0/math.js'></script>
   <script type="module" src="chiSquareTest.js" defer></script>
   <script type="module" src="queuingModels.js" defer></script>
+  <script src="simulation.js" defer></script>
 </head>
 
 <body class="bg-gray-100">
   <div class="container mx-auto py-8 px-4">
     <h1 class="text-2xl font-bold mb-4">Operations Research Project</h1>
 
-    <!-- Step 1: Chi-Square Testing -->
-    <!-- <div class="bg-white rounded-lg shadow-md p-4 mb-8">
-      <h2 class="text-lg text-center font-semibold mb-4">Chi-Square Testing</h2>
-      <input type="text" id="distribution" placeholder="Distribution.." class="border rounded-lg p-2 w-1/5 focus:outline-none"/>
-      <button class="border rounded-lg p-1 mb-8 bg-gray-200 ml-4 w-16 text-xl" id="test">Test</button>
-      <p id="error"></p>
-      <p id="chi-test" class="text-lg font-medium">Chi-square statistic = </p>
-      <p id="p-value" class="mb-4 text-lg font-medium">P-value = </p>
-      <h2 class="text-lg font-semibold mb-4">Displaying Results Graphically</h2>
-      <div class="flex flex-wrap -mx-2">
-        <div class="w-full sm:w-1/2 px-2 mb-4">
-          <canvas id="Arrival Time Chi-Square Test"></canvas>
-          <p class="text-lg text-center">Arrival Time</p>
-        </div>
-        <div class="w-full sm:w-1/2 px-2 mb-4">
-          <canvas id="Service Time Chi-Square Test"></canvas>
-          <p class="text-lg text-center">Service Time</p>
-        </div>
-      </div>
-    </div> -->
-
-    <!-- Step 2: Queuing Models -->
+    <!-- Queuing Models -->
     <div class="bg-white rounded-lg shadow-md p-4 mb-8">
       <h2 class="text-lg font-semibold mb-4">Queuing Models</h2>
       <ul class="flex justify-center">
@@ -68,89 +48,33 @@
           <p id="waiting-time-queue" class="text-lg font-medium">AverageWaitingTime(System) : </p>
         </div>
       </div>
-    </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4"></script>
-    <!-- Step 3: Displaying Results Graphically
-    <div class="bg-white rounded-lg shadow-md p-4">
-      <h2 class="text-lg font-semibold mb-4">Displaying Results Graphically</h2>
-      <div class="flex flex-wrap -mx-2">
-        <div class="w-full sm:w-1/2 px-2 mb-4">
-          <canvas id="arrival-time-chart"></canvas>
-          <p class="text-lg text-center">Arrival Time</p>
-        </div>
-        <div class="w-full sm:w-1/2 px-2 mb-4">
-          <canvas id="service-time-chart"></canvas>
-          <p class="text-lg text-center">Service Time</p>
-        </div>
-      </div>
     </div>
-  </div>
-
+    <!-- Simulation -->
+    <div class="bg-white rounded-lg shadow-md p-4 mb-8">
+      <h2 class="text-lg font-semibold mb-4">Random Number Simulator</h2>
+      <ul class="flex justify-center">
+        <li class="px-4 py-1"><button id="mm1s" class="hover:border-b hover:border-black focus:border-b focus:border-black">M/M/1</button></li>
+        <li class="px-4 py-1"><button id="mm2s" class="hover:border-b hover:border-black focus:border-b focus:border-black">M/M/2</button></li>
+        <li class="px-4 py-1"><button id="mg1s" class="hover:border-b hover:border-black focus:border-b focus:border-black">M/G/1</button></li>
+        <li class="px-4 py-1"><button id="mg2s" class="hover:border-b hover:border-black focus:border-b focus:border-black">M/G/2</button></li>
+        <li class="px-4 py-1"><button id="gg1s" class="hover:border-b hover:border-black focus:border-b focus:border-black">G/G/1</button></li>
+        <li class="px-4 py-1"><button id="gg2s" class="hover:border-b hover:border-black focus:border-b focus:border-black">G/G/2</button></li>
+      </ul>
+      <div class="my-8 w-11/12 mx-auto">
+        <div class="flex">
+          <input type="text" id="lambdas" placeholder="lambda" class="p-2 border border-black w-1/4 rounded-xl mb-4 ml-4"/>
+          <input type="text" id="mews" placeholder="mew" class="p-2 border border-black w-1/4 rounded-xl mb-4 ml-4"/>
+          <input type="text" id="maxs" placeholder="maximum" class="p-2 border border-black w-1/4 rounded-xl mb-4 ml-4"/>
+          <input type="text" id="mins" placeholder="minimum" class="p-2 border border-black w-1/4 rounded-xl mb-4 ml-4"/>
+          <input type="text" id="mean-1s" placeholder="Mean" class="p-2 border border-black w-1/4 rounded-xl mb-4 ml-4"/>
+          <input type="text" id="variance-1s" placeholder="Variance" class="p-2 border border-black w-1/4 rounded-xl mb-4 ml-4"/>
+          <input type="text" id="mean-2s" placeholder="Mean" class="p-2 border border-black w-1/4 rounded-xl mb-4 ml-4"/>
+          <input type="text" id="variance-2s" placeholder="Variance" class="p-2 border border-black w-1/4 rounded-xl mb-4 ml-4"/>
+          <input type="text" id="random-no" placeholder="random numbers" class="p-2 border border-black w-1/4 rounded-xl mb-4 ml-4"/>
+        </div>
+        <button id="calculates" class="rounded-xl bg-gray-500 text-white font-medium p-2 w-1/4 ml-4">Calculate</button>
+    </div>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4"></script>
-  <script>
-    // Step 3: Displaying Results Graphically
-
-    // Example data for arrival time chart
-    const arrivalTimeData = {
-      labels: ["Interval 1", "Interval 2", "Interval 3", "Interval 4"],
-      observed: [5, 7, 4, 8],
-      expected: [6, 6, 6, 6]
-    };
-
-    // Example data for service time chart
-    const serviceTimeData = {
-      labels: ["Interval 1", "Interval 2", "Interval 3", "Interval 4"],
-      observed: [3, 9, 5, 6],
-      expected: [6, 5, 4, 7]
-    };
-
-    // Function to display bar plot
-    function displayBarPlot(canvasId, data) {
-      const ctx = document.getElementById(canvasId).getContext("2d");
-
-      new Chart(ctx, {
-        type: "bar",
-        data: {
-          labels: data.labels,
-          datasets: [{
-              label: "Observed",
-              data: data.observed,
-              backgroundColor: "rgba(75, 192, 192, 0.6)",
-              borderColor: "rgba(75, 192, 192, 1)",
-              borderWidth: 1
-            },
-            {
-              label: "Expected",
-              data: data.expected,
-              backgroundColor: "rgba(255, 99, 132, 0.6)",
-              borderColor: "rgba(255, 99, 132, 1)",
-              borderWidth: 1
-            }
-          ]
-        },
-        options: {
-          responsive: true,
-          scales: {
-            x: {
-              grid: {
-                display: false
-              }
-            },
-            y: {
-              beginAtZero: true
-            }
-          }
-        }
-      });
-    }
-
-    // Call the function to display arrival time chart
-    displayBarPlot("arrival-time-chart", arrivalTimeData);
-
-    // Call the function to display service time chart
-    displayBarPlot("service-time-chart", serviceTimeData);
-  </script> -->
 </body>
-
 </html>

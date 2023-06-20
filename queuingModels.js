@@ -175,21 +175,49 @@ function calculateGG2() {
 let selectedModel = 'mm1'
 
 document.getElementById("mm1").addEventListener('click', () => {
-  document.getElementById('lambda').style.display = 'block'
-  document.getElementById('mew').style.display = 'block'
-  document.getElementById('max').style.display = 'none'
-  document.getElementById('min').style.display = 'none'
-  document.getElementById('mean-1').style.display = 'none'
-  document.getElementById('mean-2').style.display = 'none'
-  document.getElementById('variance-1').style.display = 'none'
-  document.getElementById('variance-2').style.display = 'none'
-  document.getElementById(selectedModel).style.borderBottom = 'none'
+  implementMM()
   selectedModel = 'mm1'
   document.getElementById("mm1").style.borderBottom = 'thin solid black'
   console.log('mm1')
 })
 
 document.getElementById('mm2').addEventListener('click', () => {
+  implementMM()
+  selectedModel = 'mm2'
+  document.getElementById('mm2').style.borderBottom = 'thin solid black'
+  console.log('mm2')
+})
+
+document.getElementById('mg1').addEventListener('click', () => {
+  implementMG()
+  selectedModel = 'mg1'
+  document.getElementById("mg1").style.borderBottom = 'thin solid black'
+  console.log('mg1')
+})
+
+document.getElementById('mg2').addEventListener('click', () => {
+  implementMG()
+  selectedModel = 'mg2'
+  document.getElementById("mg2").style.borderBottom = 'thin solid black'
+  console.log('mg2')
+})
+
+
+document.getElementById('gg1').addEventListener('click', () => {
+  implementGG()
+  selectedModel = 'gg1'
+  document.getElementById("gg1").style.borderBottom = 'thin solid black'
+  console.log('gg1')
+})
+
+document.getElementById('gg2').addEventListener('click', () => {
+  implementGG()
+  selectedModel = 'gg2'
+  document.getElementById("gg2").style.borderBottom = 'thin solid black'
+  console.log('gg2')
+})
+
+function implementMM(){
   document.getElementById('lambda').style.display = 'block'
   document.getElementById('mew').style.display = 'block'
   document.getElementById('max').style.display = 'none'
@@ -199,12 +227,9 @@ document.getElementById('mm2').addEventListener('click', () => {
   document.getElementById('variance-1').style.display = 'none'
   document.getElementById('variance-2').style.display = 'none'
   document.getElementById(selectedModel).style.borderBottom = 'none'
-  selectedModel = 'mm2'
-  document.getElementById('mm2').style.borderBottom = 'thin solid black'
-  console.log('mm2')
-})
+}
 
-document.getElementById('mg1').addEventListener('click', () => {
+function implementMG(){
   document.getElementById('lambda').style.display = 'block'
   document.getElementById('mew').style.display = 'none'
   document.getElementById('max').style.display = 'block'
@@ -214,27 +239,9 @@ document.getElementById('mg1').addEventListener('click', () => {
   document.getElementById('variance-1').style.display = 'none'
   document.getElementById('variance-2').style.display = 'none'
   document.getElementById(selectedModel).style.borderBottom = 'none'
-  selectedModel = 'mg1'
-  document.getElementById("mg1").style.borderBottom = 'thin solid black'
-  console.log('mg1')
-})
+}
 
-document.getElementById('mg2').addEventListener('click', () => {
-  document.getElementById('lambda').style.display = 'block'
-  document.getElementById('mew').style.display = 'none'
-  document.getElementById('max').style.display = 'block'
-  document.getElementById('min').style.display = 'block'
-  document.getElementById('mean-1').style.display = 'none'
-  document.getElementById('mean-2').style.display = 'none'
-  document.getElementById('variance-1').style.display = 'none'
-  document.getElementById('variance-2').style.display = 'none'
-  document.getElementById(selectedModel).style.borderBottom = 'none'
-  selectedModel = 'mg2'
-  document.getElementById("mg2").style.borderBottom = 'thin solid black'
-  console.log('mg2')
-})
-
-document.getElementById('gg1').addEventListener('click', () => {
+function implementGG(){
   document.getElementById('mean-1').style.display = 'block'
   document.getElementById('mean-2').style.display = 'block'
   document.getElementById('variance-1').style.display = 'block'
@@ -244,25 +251,7 @@ document.getElementById('gg1').addEventListener('click', () => {
   document.getElementById('min').style.display = 'none'
   document.getElementById('lambda').style.display = 'none'
   document.getElementById(selectedModel).style.borderBottom = 'none'
-  selectedModel = 'gg1'
-  document.getElementById("gg1").style.borderBottom = 'thin solid black'
-  console.log('gg1')
-})
-
-document.getElementById('gg2').addEventListener('click', () => {
-  document.getElementById('mean-1').style.display = 'block'
-  document.getElementById('mean-2').style.display = 'block'
-  document.getElementById('variance-1').style.display = 'block'
-  document.getElementById('variance-2').style.display = 'block'
-  document.getElementById('mew').style.display = 'none'
-  document.getElementById('max').style.display = 'none'
-  document.getElementById('min').style.display = 'none'
-  document.getElementById('lambda').style.display = 'none'
-  document.getElementById(selectedModel).style.borderBottom = 'none'
-  selectedModel = 'gg2'
-  document.getElementById("gg2").style.borderBottom = 'thin solid black'
-  console.log('gg2')
-})
+}
 
 document.getElementById('mm1').click()
 
