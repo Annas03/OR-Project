@@ -6,12 +6,45 @@ function MM1Simulation(){
     randomNo = Number(document.getElementById('random-no').value)
     arrivalRate = Number(document.getElementById('lambdas').value)
     serviceRate = Number(document.getElementById('mews').value)
+    
+    const cp = populateCP(randomNo, arrivalRate)
+    let cpl = cp.map((data) => data)
+    cpl.unshift(0)
+    cpl.pop()
+    const interArrival = populateIA()
 }
 
 function MM2Simulation(){
     randomNo = Number(document.getElementById('random-no').value)
     arrivalRate = Number(document.getElementById('lambdas').value)
     serviceRate = Number(document.getElementById('mews').value)
+}
+
+function populateIA(){
+    
+}
+
+function populateCP(randomNo, arrivalRate){
+    let res = []
+    let sum = 0;
+    for(let i = 1; i <= randomNo; i++){
+        sum += (Math.pow(2.71828,-arrivalRate)*Math.pow(arrivalRate, i-1))/factorial(i-1)
+        res.push(sum)
+    }
+    return res
+}
+
+function factorial(n) {
+    if (n === 0 || n === 1) {
+      return 1;
+    }
+  
+    let result = 1;
+    for (let i = 2; i <= n; i++) {
+      result *= i;
+    }
+  
+    return result;
 }
 
 let selectedModel = 'mm1'
