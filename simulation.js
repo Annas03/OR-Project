@@ -1,50 +1,71 @@
-let arrivalRate, serviceRate, min, max, randomNo;
+let arrivalRate, serviceRate, min, max, numberOfEvents;
 
 // M/M/1 Simulation:
 
-function MM1Simulation(){
-    randomNo = Number(document.getElementById('random-no').value)
-    arrivalRate = Number(document.getElementById('lambdas').value)
-    serviceRate = Number(document.getElementById('mews').value)
-    
-    const cp = populateCP(randomNo, arrivalRate)
-    let cpl = cp.map((data) => data)
-    cpl.unshift(0)
-    cpl.pop()
-    const interArrival = populateIA()
+function exponentialDistribution(serviceRate) {
+  return -(serviceRate)*(Math.log(1 - Math.random()));
 }
 
-function MM2Simulation(){
-    randomNo = Number(document.getElementById('random-no').value)
-    arrivalRate = Number(document.getElementById('lambdas').value)
-    serviceRate = Number(document.getElementById('mews').value)
+function poissonDistribution(arrivalRate) {
+  const L = Math.exp(-arrivalRate);
+  let k = 0;
+  let p = 1;
+  do {
+    k++;
+    p *= Math.random();
+  } while (p > L);
+  return k - 1;
 }
 
-function populateIA(){
-    
-}
-
-function populateCP(randomNo, arrivalRate){
-    let res = []
-    let sum = 0;
-    for(let i = 1; i <= randomNo; i++){
-        sum += (Math.pow(2.71828,-arrivalRate)*Math.pow(arrivalRate, i-1))/factorial(i-1)
-        res.push(sum)
-    }
-    return res
-}
-
-function factorial(n) {
-    if (n === 0 || n === 1) {
-      return 1;
-    }
+function simulateMM1() {
+  arrivalRate = Number(document.getElementById('lambdas').value);serviceRate = Number(document.getElementById('mews').value);
+  numberOfEvents = Number(document.getElementById('random-no').value)
+  let arrivalTime = 0;
+  let startTime = 0;
+  let endTime = 0;
+  let serviceTime = 0;
+  let turnAroundTime = 0;
+  let waitTime = 0;
+  let responseTime = 0;
+  let serverUtilization = 0;
   
-    let result = 1;
-    for (let i = 2; i <= n; i++) {
-      result *= i;
+  for (let i = 0; i < numberOfEvents; i++) {
+    const interArrivalTime = poissonDistribution(arrivalRate)
+    const arrival = arrivalTime + interArrivalTime;
+    const service = exponentialDistribution(serviceRate);
+    arrivalTime = arrival;
+    serviceTime = service;
+    
+    if (arrival > endTime) {
+      startTime = arrival;
+    } else {
+      startTime = endTime;
     }
+    
+    endTime = startTime + service;
+    turnAroundTime = endTime - arrival;
+    waitTime = startTime - arrival;
+    responseTime = waitTime + service;
+    
+    serverUtilization += serviceTime / (endTime - startTime);
+
+    let tableRow = document.createElement('tr');
+    tableRow.innerHTML = `
+        <td class="border px-6 py-4">${arrival.toFixed(2)}</td>
+        <td class="border px-6 py-4">${startTime.toFixed(2)}</td>
+        <td class="border px-6 py-4">${endTime.toFixed(2)}</td>
+        <td class="border px-6 py-4">${serviceTime.toFixed(2)}</td>
+        <td class="border px-6 py-4">${turnAroundTime.toFixed(2)}</td>
+        <td class="border px-6 py-4">${waitTime.toFixed(2)}</td>
+        <td class="border px-6 py-4">${responseTime.toFixed(2)}</td>
+    `;
+
+  // Append the table row to the table body
+  document.querySelector('.t-body').appendChild(tableRow)
+  }
   
-    return result;
+  serverUtilization = serverUtilization / numberOfEvents;
+  document.querySelector('#util').innerHTML += serverUtilization.toFixed(2)*100 + "%"
 }
 
 let selectedModel = 'mm1'
@@ -127,7 +148,7 @@ document.getElementById('mm1s').click()
 document.getElementById('calculates').addEventListener('click', () => {
     switch (selectedModel) {
         case 'mm1s':
-          MM1Simulation()
+          simulateMM1();
           break;
         case 'mm2s':
           MM2Simulation()

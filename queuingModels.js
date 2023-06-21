@@ -1,12 +1,5 @@
-// Assuming you have the arrival time and service time data available in separate arrays
-const arrivalTimes = [9, 9, 10, 10, 11, 11, 12, 12, 13, 13];
-const serviceTimes = [10, 8, 12, 10, 9, 7, 11, 10, 8, 9, 7];
+// Queuing Models
 
-// Step 3: Queuing Models
-// Implement the queuing models (M/M/1, M/M/2, M/G/1, M/G/2, G/G/1, G/G/2) using appropriate mathematical formulas
-
-// let arrivalRate = 1 / (arrivalTimes.reduce((a, b) => a + b, 0) / arrivalTimes.length);
-// let serviceRate = 1 / (serviceTimes.reduce((a, b) => a + b, 0) / serviceTimes.length);
 let arrivalRate, serviceRate, min, max;
 
 // M/M/1 Queue Model

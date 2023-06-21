@@ -7,9 +7,9 @@
   <title>Operations Research Project</title>
   <link href="/dist/output.css" rel="stylesheet">
   <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjs/9.2.0/math.js'></script>
-  <script type="module" src="chiSquareTest.js" defer></script>
   <script type="module" src="queuingModels.js" defer></script>
   <script src="simulation.js" defer></script>
+  <!-- <script src="s.js"></script> -->
 </head>
 
 <body class="bg-gray-100">
@@ -74,6 +74,24 @@
           <input type="text" id="random-no" placeholder="random numbers" class="p-2 border border-black w-1/4 rounded-xl mb-4 ml-4"/>
         </div>
         <button id="calculates" class="rounded-xl bg-gray-500 text-white font-medium p-2 w-1/4 ml-4">Calculate</button>
+        <div class="container mx-auto mt-12">
+          <table class="min-w-full">
+            <thead>
+              <tr>
+                <th class="px-6 py-3 bg-gray-200 text-gray-600 font-bold uppercase text-sm">Arrival Time</th>
+                <th class="px-6 py-3 bg-gray-200 text-gray-600 font-bold uppercase text-sm">Start Time</th>
+                <th class="px-6 py-3 bg-gray-200 text-gray-600 font-bold uppercase text-sm">End Time</th>
+                <th class="px-6 py-3 bg-gray-200 text-gray-600 font-bold uppercase text-sm">Service Time</th>
+                <th class="px-6 py-3 bg-gray-200 text-gray-600 font-bold uppercase text-sm">Turnaround Time</th>
+                <th class="px-6 py-3 bg-gray-200 text-gray-600 font-bold uppercase text-sm">Wait Time</th>
+                <th class="px-6 py-3 bg-gray-200 text-gray-600 font-bold uppercase text-sm">Response Time</th>
+              </tr>
+            </thead>
+            <tbody class="t-body">
+            </tbody>
+          </table>
+        </div>
+        <p id="util">Server Utilization: </p>
     </div>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4"></script>
 </body>
