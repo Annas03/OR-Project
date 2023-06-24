@@ -45,7 +45,7 @@ function simulateMM1() {
     endTime = startTime + service;
     turnAroundTime = endTime - arrival;
     waitTime = startTime - arrival;
-    responseTime = waitTime + service;
+    responseTime = startTime - arrivalTime;
     
     serverUtilization += serviceTime / (endTime - startTime);
 
@@ -69,67 +69,86 @@ function simulateMM1() {
 }
 
 function simulateMM2() {
-  arrivalRate = Number(document.getElementById('lambdas').value);serviceRate = Number(document.getElementById('mews').value);
+  arrivalRate = Number(document.getElementById('lambdas').value);
+  serviceRate = Number(document.getElementById('mews').value);
   numberOfEvents = Number(document.getElementById('random-no').value)
   let arrivalTime = 0;
-  let startTime1 = 0;
-  let startTime2 = 0;
-  let endTime1 = 0;
-  let endTime2 = 0;
-  let serviceTime1 = 0;
-  let serviceTime2 = 0;
-  let turnAroundTime = 0;
+  let startTime = 0;
+  let endTime = 0;
+  let turnaroundTime = 0;
   let waitTime = 0;
   let responseTime = 0;
   let serverUtilization = 0;
+  let server1Utilization = 0
+  let server2Utilization = 0
+  let totalServiceTime = 0
+
+   // Initialize variables for the two servers
+   let server1EndTime = 0;
+   let server2EndTime = 0;
+   let server1StartTime = 0;
+   let server2StartTime = 0;
+   let server = ''
   
   for (let i = 0; i < numberOfEvents; i++) {
     const interArrivalTime = poissonDistribution(arrivalRate)
     const arrival = arrivalTime + interArrivalTime;
-    const service1 = exponentialDistribution(serviceRate);
-    const service2 = exponentialDistribution(serviceRate);
+    const serviceTime = exponentialDistribution(serviceRate);
+    totalServiceTime += serviceTime
     arrivalTime = arrival;
-    serviceTime1 = service1;
-    serviceTime2 = service2;
     
-    if (arrival > endTime1 && arrival > endTime2) {
-      startTime1 = arrival;
-      startTime2 = startTime1 + service1;
-      endTime1 = startTime1 + service1;
-      endTime2 = startTime2 + service2;
-    } else if (arrival > endTime1 && arrival < endTime2) {
-      startTime1 = endTime2;
-      startTime2 = startTime1 + service1;
-      endTime1 = startTime1 + service1;
-      endTime2 = startTime2 + service2;
-    } else if (arrival < endTime1 && arrival > endTime2) {
-      startTime1 = endTime1;
-      startTime2 = startTime1 + service1;
-      endTime1 = startTime1 + service1;
-      endTime2 = startTime2 + service2;
-    } else {
-      startTime1 = endTime1;
-      startTime2 = endTime2;
-      endTime1 = startTime1 + service1;
-      endTime2 = startTime2 + service2;
+    if(server1EndTime <= arrivalTime){
+      startTime = arrivalTime
+      server1StartTime = arrivalTime
+      server1EndTime = arrivalTime + serviceTime
+      endTime = server1EndTime
+      turnaroundTime = server1EndTime - server1StartTime;
+      waitTime = server1StartTime - arrivalTime;
+      server = 'S1'
+      server1Utilization += endTime - startTime
     }
-    
-    turnAroundTime = endTime2 - arrival;
-    waitTime = startTime1 - arrival;
-    responseTime = waitTime + service1;
-    
-    serverUtilization += (serviceTime1 + serviceTime2) / (endTime2 - startTime1);
+    else if(server2EndTime <= arrivalTime){
+      server2StartTime = arrivalTime
+      startTime = arrivalTime
+      server2EndTime =  arrivalTime + serviceTime
+      endTime = server2EndTime
+      turnaroundTime = server2EndTime - arrivalTime;
+      waitTime = server2StartTime - arrivalTime;
+      server = 'S2'
+      server2Utilization += endTime - startTime
+    }
+    else if(arrivalTime < server1EndTime && arrivalTime < server2EndTime){
+      if(server1EndTime <= server2EndTime){
+        server1StartTime =  server1EndTime
+        startTime = server1StartTime
+        server1EndTime = server1EndTime + serviceTime
+        endTime = server1EndTime
+        turnaroundTime = server1EndTime - server1StartTime;
+        waitTime = server1StartTime - arrivalTime;
+        server = 'S1'
+        server1Utilization += endTime - startTime
+      }
+      else{
+        server2StartTime = server2EndTime
+        startTime = server2StartTime
+        server2EndTime =  server2EndTime + serviceTime
+        endTime = server2EndTime
+        turnaroundTime = server2EndTime - server2StartTime;
+        waitTime = server2StartTime - arrivalTime;
+        server = 'S2'
+        server2Utilization += endTime - startTime
+      }
+    }
+    responseTime = startTime - arrivalTime;
     
     let tableRow = document.createElement('tr');
     tableRow.innerHTML = `
-        <td class="border px-6 py-4">${arrival.toFixed(2)}</td>
-        <td class="border px-6 py-4">${startTime1.toFixed(2)}</td>
-        <td class="border px-6 py-4">${endTime1.toFixed(2)}</td>
-        <td class="border px-6 py-4">${serviceTime1.toFixed(2)}</td>
-        <td class="border px-6 py-4">${startTime2.toFixed(2)}</td>
-        <td class="border px-6 py-4">${endTime2.toFixed(2)}</td>
-        <td class="border px-6 py-4">${serviceTime2.toFixed(2)}</td>
-        <td class="border px-6 py-4">${turnAroundTime.toFixed(2)}</td>
+        <td class="border px-6 py-4">${arrivalTime.toFixed(2)}</td>
+        <td class="border px-6 py-4">${startTime.toFixed(2)}</td>
+        <td class="border px-6 py-4">${endTime.toFixed(2)}</td>
+        <td class="border px-6 py-4">${server}</td>
+        <td class="border px-6 py-4">${serviceTime.toFixed(2)}</td>
+        <td class="border px-6 py-4">${turnaroundTime.toFixed(2)}</td>
         <td class="border px-6 py-4">${waitTime.toFixed(2)}</td>
         <td class="border px-6 py-4">${responseTime.toFixed(2)}</td>
     `;
@@ -138,8 +157,8 @@ function simulateMM2() {
   document.querySelector('.t-body-2').appendChild(tableRow)
   }
   
-  serverUtilization = serverUtilization / numberOfEvents;
-  document.querySelector('#util').innerHTML += serverUtilization.toFixed(2)*100 + "%"
+  serverUtilization = ((server1Utilization + server2Utilization)/totalServiceTime)*100;
+  document.querySelector('#util').innerHTML += serverUtilization.toFixed(0) + "%"
 }
 
 let selectedModel = 'mm1s'
