@@ -30,9 +30,10 @@ function simulateMM1() {
   let serverUtilization = 0;
   
   for (let i = 0; i < numberOfEvents; i++) {
-    const interArrivalTime = poissonDistribution(arrivalRate)
-    const arrival = arrivalTime + interArrivalTime;
-    const service = exponentialDistribution(serviceRate);
+    const arrivalCount = poissonDistribution(arrivalRate);
+    const interArrivalTime = 1 / arrivalRate;
+    const arrival = Math.round(arrivalTime + arrivalCount * interArrivalTime);
+    const service = Math.round(exponentialDistribution(serviceRate));
     arrivalTime = arrival;
     serviceTime = service;
     
@@ -51,13 +52,13 @@ function simulateMM1() {
 
     let tableRow = document.createElement('tr');
     tableRow.innerHTML = `
-        <td class="border px-6 py-4">${arrival.toFixed(2)}</td>
-        <td class="border px-6 py-4">${startTime.toFixed(2)}</td>
-        <td class="border px-6 py-4">${endTime.toFixed(2)}</td>
-        <td class="border px-6 py-4">${serviceTime.toFixed(2)}</td>
-        <td class="border px-6 py-4">${turnAroundTime.toFixed(2)}</td>
-        <td class="border px-6 py-4">${waitTime.toFixed(2)}</td>
-        <td class="border px-6 py-4">${responseTime.toFixed(2)}</td>
+        <td class="font-semibold border text-center px-2 py-3">${arrival}</td>
+        <td class="font-semibold border text-center px-2 py-3">${startTime}</td>
+        <td class="font-semibold border text-center px-2 py-3">${endTime}</td>
+        <td class="font-semibold border text-center px-2 py-3">${serviceTime}</td>
+        <td class="font-semibold border text-center px-2 py-3">${turnAroundTime}</td>
+        <td class="font-semibold border text-center px-2 py-3">${waitTime}</td>
+        <td class="font-semibold border text-center px-2 py-3">${responseTime}</td>
     `;
 
   // Append the table row to the table body
