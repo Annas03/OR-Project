@@ -1,7 +1,5 @@
 let arrivalRate, serviceRate, serviceTimeMin, serviceTimeMax, numberOfEvents, meanArrival, varianceArrival, meanService, varianceService;
 
-// M/M/1 Simulation:
-
 function exponentialDistribution(serviceRate) {
   return -(serviceRate)*(Math.log(1 - Math.random()));
 }
@@ -17,117 +15,12 @@ function poissonDistribution(arrivalRate) {
   return k - 1;
 }
 
-function simulateMM1() {
-  arrivalRate = Number(document.getElementById('lambdas').value);serviceRate = Number(document.getElementById('mews').value);
-  numberOfEvents = Number(document.getElementById('random-no').value)
-  let arrivalTime = 0;
-  let startTime = 0;
-  let endTime = 0;
-  let serviceTime = 0;
-  let turnAroundTime = 0;
-  let waitTime = 0;
-  let responseTime = 0;
-  let serverUtilization = 0;
-  let totalIntervalTime = 0;
-  let totalServiceTime = 0;
-  
-  for (let i = 0; i < numberOfEvents; i++) {
-    const arrivalCount = poissonDistribution(arrivalRate);
-    totalIntervalTime +=  arrivalCount;
-    const arrival = arrivalTime + arrivalCount
-    const service = exponentialDistribution(serviceRate);
-    arrivalTime = arrival;
-    serviceTime = service;
-    totalServiceTime += serviceTime
-    
-    if (arrival > endTime) {
-      startTime = arrival;
-    } else {
-      startTime = endTime;
-    }
-    
-    endTime = startTime + service;
-    turnAroundTime = endTime - arrival;
-    waitTime = turnAroundTime - serviceTime;
-    responseTime = Math.round(startTime) - Math.round(arrivalTime);
-
-    let tableRow = document.createElement('tr');
-    tableRow.innerHTML = `
-        <td class="font-semibold border text-center px-2 py-3">${Math.round(arrival)}</td>
-        <td class="font-semibold border text-center px-2 py-3">${Math.round(startTime)}</td>
-        <td class="font-semibold border text-center px-2 py-3">${Math.round(endTime)}</td>
-        <td class="font-semibold border text-center px-2 py-3">${Math.round(serviceTime)}</td>
-        <td class="font-semibold border text-center px-2 py-3">${Math.round(turnAroundTime)}</td>
-        <td class="font-semibold border text-center px-2 py-3">${Math.round(waitTime)}</td>
-        <td class="font-semibold border text-center px-2 py-3">${Math.round(responseTime)}</td>
-    `;
- 
-  // Append the table row to the table body
-  document.querySelector('.t-body-1').appendChild(tableRow)
-  }
-  
-  serverUtilization = ((numberOfEvents-1)/totalIntervalTime)/(numberOfEvents/totalServiceTime);
-  document.querySelector('#util').innerHTML += serverUtilization > 1 ?  100 + "%" : Math.round(serverUtilization.toFixed(2)*100) + "%"
-}
-
-// Calculate M/G/1
-
 function expDistribution(lambda) {
   return -Math.log(1 - Math.random()) / lambda;
 }
 
 function uniformDistribution(min, max) {
   return Math.random() * (max - min) + min;
-}
-
-function simulateMG1() {
-  arrivalRate = Number(document.getElementById('lambdas').value);
-  serviceTimeMin = Number(document.getElementById('mins').value)
-  serviceTimeMax = Number(document.getElementById('maxs').value)
-  n = Number(document.getElementById('random-no').value)
-
-  let arrivalTime = 0;
-  let startTime = 0;
-  let endTime = 0;
-  let serviceTime = 0;
-  let turnAroundTime = 0;
-  let waitTime = 0;
-  let responseTime = 0;
-  let serverUtilization = 0;
-  let totalIntervalTime = 0;
-  let totalServiceTime = 0;
-
-  for (let i = 0; i < n; i++) {
-    const interArrivalTime = expDistribution(arrivalRate);
-    totalIntervalTime += interArrivalTime
-    const arrival = arrivalTime + interArrivalTime;
-    const service = uniformDistribution(serviceTimeMin, serviceTimeMax);
-    arrivalTime = arrival;
-    serviceTime = service;
-    totalServiceTime += serviceTime;
-
-    startTime = Math.max(arrival, endTime);
-    endTime = startTime + service;
-
-    turnAroundTime = endTime - arrival;
-    waitTime = turnAroundTime - serviceTime;
-    responseTime = Math.round(startTime) - Math.round(arrivalTime);
-
-    let tableRow = document.createElement('tr');
-    tableRow.innerHTML = `
-        <td class="font-semibold border text-center px-2 py-3">${Math.round(arrival)}</td>
-        <td class="font-semibold border text-center px-2 py-3">${Math.round(startTime)}</td>
-        <td class="font-semibold border text-center px-2 py-3">${Math.round(endTime)}</td>
-        <td class="font-semibold border text-center px-2 py-3">${Math.round(serviceTime)}</td>
-        <td class="font-semibold border text-center px-2 py-3">${Math.round(turnAroundTime)}</td>
-        <td class="font-semibold border text-center px-2 py-3">${Math.round(waitTime)}</td>
-        <td class="font-semibold border text-center px-2 py-3">${Math.round(responseTime)}</td>
-    `;
-    document.querySelector('.t-body-1').appendChild(tableRow)
-  }
-
-  serverUtilization = ((n-1)/totalIntervalTime)/(n/totalServiceTime);
-  document.querySelector('#util').innerHTML += serverUtilization > 1 ?  100 + "%" : Math.round(serverUtilization.toFixed(2)*100) + "%"
 }
 
 function normalDistribution(mean, stddev) {
@@ -149,56 +42,6 @@ function gammaDistribution(mean, variance) {
   }
 
   return sum * scale;
-}
-// Calculate G/G/1
-function simulateGG1() {
-  meanArrival = Number(document.getElementById('mean-1s').value)
-  meanService = Number(document.getElementById('mean-2s').value)
-  varianceArrival = Number(document.getElementById('variance-1s').value)
-  varianceService = Number(document.getElementById('variance-2s').value) 
-  n = Number(document.getElementById('random-no').value)
-  let arrivalTime = 0;
-  let startTime = 0;
-  let endTime = 0;
-  let serviceTime = 0;
-  let turnAroundTime = 0;
-  let waitTime = 0;
-  let responseTime = 0;
-  let serverUtilization = 0;
-  let totalIntervalTime = 0;
-  let totalServiceTime = 0;
-
-  for (let i = 0; i < n; i++) {
-    const interArrivalTime = gammaDistribution(meanArrival, varianceArrival);
-    totalIntervalTime += interArrivalTime
-    const arrival = arrivalTime + interArrivalTime;
-    const service = normalDistribution(meanService, Math.sqrt(varianceService))
-    arrivalTime = arrival;
-    serviceTime = service;
-    totalServiceTime += serviceTime;
-
-    startTime = Math.max(arrival, endTime);
-    endTime = startTime + service;
-
-    turnAroundTime = endTime - arrival;
-    waitTime = turnAroundTime - serviceTime;
-    responseTime = startTime - arrivalTime;
-
-    let tableRow = document.createElement('tr');
-    tableRow.innerHTML = `
-        <td class="font-semibold border text-center px-2 py-3">${Math.round(arrival)}</td>
-        <td class="font-semibold border text-center px-2 py-3">${Math.round(startTime)}</td>
-        <td class="font-semibold border text-center px-2 py-3">${Math.round(endTime)}</td>
-        <td class="font-semibold border text-center px-2 py-3">${Math.round(serviceTime)}</td>
-        <td class="font-semibold border text-center px-2 py-3">${Math.round(turnAroundTime)}</td>
-        <td class="font-semibold border text-center px-2 py-3">${Math.round(waitTime)}</td>
-        <td class="font-semibold border text-center px-2 py-3">${Math.round(responseTime)}</td>
-    `;
-    document.querySelector('.t-body-1').appendChild(tableRow)
-  }
-
-  serverUtilization = ((n-1)/totalIntervalTime)/(n/totalServiceTime);
-  document.querySelector('#util').innerHTML += serverUtilization > 1 ?  100 + "%" : Math.round(serverUtilization.toFixed(2)*100) + "%"
 }
 
 function simulateSingleServerQueue(dist){
