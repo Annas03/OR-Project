@@ -1,4 +1,4 @@
-let arrivalRate, serviceRate, serviceTimeMin, serviceTimeMax, numberOfEvents;
+let arrivalRate, serviceRate, serviceTimeMin, serviceTimeMax, numberOfEvents, meanArrival, varianceArrival, meanService, varianceService;
 
 // M/M/1 Simulation:
 
@@ -316,6 +316,77 @@ function simulateMG2() {
   document.querySelector('#util').innerHTML += serverUtilization.toFixed(0) + "%"
 }
 
+function normalDistribution(mean, stddev) {
+  let u = 0,
+    v = 0;
+  while (u === 0) u = Math.random();
+  while (v === 0) v = Math.random();
+  const standardNormal = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+  return mean + stddev * standardNormal;
+}
+
+function gammaDistribution(mean, variance) {
+  const shape = mean ** 2 / variance;
+  const scale = variance / mean;
+  let sum = 0;
+
+  for (let i = 0; i < shape; i++) {
+    sum += -Math.log(Math.random());
+  }
+
+  return sum * scale;
+}
+// Calculate G/G/1
+function simulateGG1() {
+  meanArrival = Number(document.getElementById('mean-1s').value)
+  meanService = Number(document.getElementById('mean-2s').value)
+  varianceArrival = Number(document.getElementById('variance-1s').value)
+  varianceService = Number(document.getElementById('variance-2s').value) 
+  n = Number(document.getElementById('random-no').value)
+  let arrivalTime = 0;
+  let startTime = 0;
+  let endTime = 0;
+  let serviceTime = 0;
+  let turnAroundTime = 0;
+  let waitTime = 0;
+  let responseTime = 0;
+  let serverUtilization = 0;
+  let totalIntervalTime = 0;
+  let totalServiceTime = 0;
+
+  for (let i = 0; i < n; i++) {
+    const interArrivalTime = normalDistribution(meanArrival, Math.sqrt(varianceArrival));
+    totalIntervalTime += interArrivalTime
+    const arrival = arrivalTime + interArrivalTime;
+    const service = gammaDistribution(meanService, varianceService);
+    arrivalTime = arrival;
+    serviceTime = service;
+    totalServiceTime += serviceTime;
+
+    startTime = Math.max(arrival, endTime);
+    endTime = startTime + service;
+
+    turnAroundTime = endTime - arrival;
+    waitTime = turnAroundTime - serviceTime;
+    responseTime = startTime - arrivalTime;
+
+    let tableRow = document.createElement('tr');
+    tableRow.innerHTML = `
+        <td class="font-semibold border text-center px-2 py-3">${Math.round(arrival)}</td>
+        <td class="font-semibold border text-center px-2 py-3">${Math.round(startTime)}</td>
+        <td class="font-semibold border text-center px-2 py-3">${Math.round(endTime)}</td>
+        <td class="font-semibold border text-center px-2 py-3">${Math.round(serviceTime)}</td>
+        <td class="font-semibold border text-center px-2 py-3">${Math.round(turnAroundTime)}</td>
+        <td class="font-semibold border text-center px-2 py-3">${Math.round(waitTime)}</td>
+        <td class="font-semibold border text-center px-2 py-3">${Math.round(responseTime)}</td>
+    `;
+    document.querySelector('.t-body-1').appendChild(tableRow)
+  }
+
+  serverUtilization = ((n-1)/totalIntervalTime)/(n/totalServiceTime);
+  document.querySelector('#util').innerHTML += serverUtilization > 1 ?  100 + "%" : Math.round(serverUtilization.toFixed(2)*100) + "%"
+}
+
 let selectedModel = 'mm1s'
 
 document.getElementById("mm1s").addEventListener('click', () => {
@@ -424,6 +495,8 @@ document.getElementById('calculates').addEventListener('click', () => {
           break;
         case 'mg2s':
           simulateMG2();
+        case 'gg1s':
+          simulateGG1();
           break;
         default:
           break;
