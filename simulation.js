@@ -96,7 +96,7 @@ function simulateMM2() {
     const arrival = arrivalTime + interArrivalTime;
     const serviceTime = exponentialDistribution(serviceRate);
     totalServiceTime += serviceTime
-    arrivalTime = arrival;
+    arrivalTime = Math.round(arrival);
     
     if(server1EndTime <= arrivalTime){
       startTime = arrivalTime
@@ -144,14 +144,14 @@ function simulateMM2() {
     
     let tableRow = document.createElement('tr');
     tableRow.innerHTML = `
-        <td class="border px-6 py-4">${arrivalTime.toFixed(2)}</td>
-        <td class="border px-6 py-4">${startTime.toFixed(2)}</td>
-        <td class="border px-6 py-4">${endTime.toFixed(2)}</td>
-        <td class="border px-6 py-4">${server}</td>
-        <td class="border px-6 py-4">${serviceTime.toFixed(2)}</td>
-        <td class="border px-6 py-4">${turnaroundTime.toFixed(2)}</td>
-        <td class="border px-6 py-4">${waitTime.toFixed(2)}</td>
-        <td class="border px-6 py-4">${responseTime.toFixed(2)}</td>
+        <td class="font-semibold border text-center px-2 py-3">${Math.round(arrivalTime)}</td>
+        <td class="font-semibold border text-center px-2 py-3">${Math.round(startTime)}</td>
+        <td class="font-semibold border text-center px-2 py-3">${Math.round(endTime)}</td>
+        <td class="font-semibold border text-center px-2 py-3">${server}</td>
+        <td class="font-semibold border text-center px-2 py-3">${Math.round(serviceTime)}</td>
+        <td class="font-semibold border text-center px-2 py-3">${Math.round(turnaroundTime)}</td>
+        <td class="font-semibold border text-center px-2 py-3">${Math.round(waitTime)}</td>
+        <td class="font-semibold border text-center px-2 py-3">${Math.round(responseTime)}</td>
     `;
 
   // Append the table row to the table body
