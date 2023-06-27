@@ -1,4 +1,4 @@
-let arrivalRate, serviceRate, min, max, numberOfEvents;
+let arrivalRate, serviceRate, serviceTimeMin, serviceTimeMax, numberOfEvents;
 
 // M/M/1 Simulation:
 
@@ -162,6 +162,64 @@ function simulateMM2() {
   document.querySelector('#util').innerHTML += serverUtilization.toFixed(0) + "%"
 }
 
+// Calculate M/G/1
+
+function expDistribution(lambda) {
+  return -Math.log(1 - Math.random()) / lambda;
+}
+
+function uniformDistribution(min, max) {
+  return Math.random() * (max - min) + min;
+}
+
+function simulateMG1() {
+  arrivalRate = Number(document.getElementById('lambdas').value);
+  serviceTimeMin = Number(document.getElementById('mins').value)
+  serviceTimeMax = Number(document.getElementById('maxs').value)
+  n = Number(document.getElementById('random-no').value)
+
+  let arrivalTime = 0;
+  let startTime = 0;
+  let endTime = 0;
+  let serviceTime = 0;
+  let turnAroundTime = 0;
+  let waitTime = 0;
+  let responseTime = 0;
+  let serverUtilization = 0;
+
+  for (let i = 0; i < n; i++) {
+    const interArrivalTime = expDistribution(arrivalRate);
+    const arrival = arrivalTime + interArrivalTime;
+    const service = uniformDistribution(serviceTimeMin, serviceTimeMax);
+    arrivalTime = arrival;
+    serviceTime = service;
+
+    startTime = Math.max(arrival, endTime);
+    endTime = startTime + service;
+
+    turnAroundTime = endTime - arrival;
+    waitTime = startTime - arrival;
+    responseTime = waitTime + service;
+
+    serverUtilization += service / endTime;
+
+    let tableRow = document.createElement('tr');
+    tableRow.innerHTML = `
+        <td class="font-semibold border text-center px-2 py-3">${Math.round(arrival)}</td>
+        <td class="font-semibold border text-center px-2 py-3">${Math.round(startTime)}</td>
+        <td class="font-semibold border text-center px-2 py-3">${Math.round(endTime)}</td>
+        <td class="font-semibold border text-center px-2 py-3">${Math.round(serviceTime)}</td>
+        <td class="font-semibold border text-center px-2 py-3">${Math.round(turnAroundTime)}</td>
+        <td class="font-semibold border text-center px-2 py-3">${Math.round(waitTime)}</td>
+        <td class="font-semibold border text-center px-2 py-3">${Math.round(responseTime)}</td>
+    `;
+    document.querySelector('.t-body-1').appendChild(tableRow)
+  }
+
+  serverUtilization = serverUtilization / n;
+  document.querySelector('#util').innerHTML += Math.round(serverUtilization*100) + "%"
+}
+
 let selectedModel = 'mm1s'
 
 document.getElementById("mm1s").addEventListener('click', () => {
@@ -264,6 +322,9 @@ document.getElementById('calculates').addEventListener('click', () => {
           break;
         case 'mm2s':
           simulateMM2();
+          break;
+        case 'mg1s':
+          simulateMG1();
           break;
         default:
           break;
