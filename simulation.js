@@ -28,14 +28,17 @@ function simulateMM1() {
   let waitTime = 0;
   let responseTime = 0;
   let serverUtilization = 0;
+  let totalIntervalTime = 0;
+  let totalServiceTime = 0;
   
   for (let i = 0; i < numberOfEvents; i++) {
     const arrivalCount = poissonDistribution(arrivalRate);
-    const interArrivalTime = 1 / arrivalRate;
-    const arrival = arrivalTime + arrivalCount * interArrivalTime
+    totalIntervalTime +=  arrivalCount;
+    const arrival = arrivalTime + arrivalCount
     const service = exponentialDistribution(serviceRate);
     arrivalTime = arrival;
     serviceTime = service;
+    totalServiceTime += serviceTime
     
     if (arrival > endTime) {
       startTime = arrival;
@@ -47,8 +50,6 @@ function simulateMM1() {
     turnAroundTime = endTime - arrival;
     waitTime = turnAroundTime - serviceTime;
     responseTime = Math.round(startTime) - Math.round(arrivalTime);
-    
-    serverUtilization += serviceTime / (endTime - startTime);
 
     let tableRow = document.createElement('tr');
     tableRow.innerHTML = `
@@ -65,8 +66,8 @@ function simulateMM1() {
   document.querySelector('.t-body-1').appendChild(tableRow)
   }
   
-  serverUtilization = serverUtilization / numberOfEvents;
-  document.querySelector('#util').innerHTML += serverUtilization.toFixed(2)*100 + "%"
+  serverUtilization = ((numberOfEvents-1)/totalIntervalTime)/(numberOfEvents/totalServiceTime);
+  document.querySelector('#util').innerHTML += serverUtilization > 1 ?  100 + "%" : Math.round(serverUtilization.toFixed(2)*100) + "%"
 }
 
 function simulateMM2() {
@@ -93,6 +94,7 @@ function simulateMM2() {
   
   for (let i = 0; i < numberOfEvents; i++) {
     const interArrivalTime = poissonDistribution(arrivalRate)
+    // totalIntervalTime += interArrivalTime
     const arrival = arrivalTime + interArrivalTime;
     const serviceTime = exponentialDistribution(serviceRate);
     totalServiceTime += serviceTime
@@ -106,7 +108,6 @@ function simulateMM2() {
       turnaroundTime = server1EndTime - server1StartTime;
       waitTime = server1StartTime - arrivalTime;
       server = 'S1'
-      server1Utilization += endTime - startTime
     }
     else if(server2EndTime <= arrivalTime){
       server2StartTime = arrivalTime
@@ -116,7 +117,6 @@ function simulateMM2() {
       turnaroundTime = server2EndTime - arrivalTime;
       waitTime = server2StartTime - arrivalTime;
       server = 'S2'
-      server2Utilization += endTime - startTime
     }
     else if(arrivalTime < server1EndTime && arrivalTime < server2EndTime){
       if(server1EndTime <= server2EndTime){
@@ -127,7 +127,6 @@ function simulateMM2() {
         turnaroundTime = server1EndTime - server1StartTime;
         waitTime = server1StartTime - arrivalTime;
         server = 'S1'
-        server1Utilization += endTime - startTime
       }
       else{
         server2StartTime = server2EndTime
@@ -137,10 +136,10 @@ function simulateMM2() {
         turnaroundTime = server2EndTime - server2StartTime;
         waitTime = server2StartTime - arrivalTime;
         server = 'S2'
-        server2Utilization += endTime - startTime
       }
     }
     responseTime = startTime - arrivalTime;
+    server == 'S1' ? server1Utilization += endTime - startTime : server2Utilization += endTime - startTime
     
     let tableRow = document.createElement('tr');
     tableRow.innerHTML = `
@@ -159,6 +158,7 @@ function simulateMM2() {
   }
   
   serverUtilization = ((server1Utilization + server2Utilization)/totalServiceTime)*100;
+  console.log(serverUtilization)
   document.querySelector('#util').innerHTML += serverUtilization.toFixed(0) + "%"
 }
 
@@ -186,22 +186,24 @@ function simulateMG1() {
   let waitTime = 0;
   let responseTime = 0;
   let serverUtilization = 0;
+  let totalIntervalTime = 0;
+  let totalServiceTime = 0;
 
   for (let i = 0; i < n; i++) {
     const interArrivalTime = expDistribution(arrivalRate);
+    totalIntervalTime += interArrivalTime
     const arrival = arrivalTime + interArrivalTime;
     const service = uniformDistribution(serviceTimeMin, serviceTimeMax);
     arrivalTime = arrival;
     serviceTime = service;
+    totalServiceTime += serviceTime;
 
     startTime = Math.max(arrival, endTime);
     endTime = startTime + service;
 
     turnAroundTime = endTime - arrival;
-    waitTime = startTime - arrival;
-    responseTime = waitTime + service;
-
-    serverUtilization += service / endTime;
+    waitTime = turnAroundTime - serviceTime;
+    responseTime = startTime - arrivalTime;
 
     let tableRow = document.createElement('tr');
     tableRow.innerHTML = `
@@ -216,8 +218,8 @@ function simulateMG1() {
     document.querySelector('.t-body-1').appendChild(tableRow)
   }
 
-  serverUtilization = serverUtilization / n;
-  document.querySelector('#util').innerHTML += Math.round(serverUtilization*100) + "%"
+  serverUtilization = ((n-1)/totalIntervalTime)/(n/totalServiceTime);
+  document.querySelector('#util').innerHTML += serverUtilization > 1 ?  100 + "%" : Math.round(serverUtilization.toFixed(2)*100) + "%"
 }
 
 let selectedModel = 'mm1s'
