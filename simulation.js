@@ -355,10 +355,10 @@ function simulateGG1() {
   let totalServiceTime = 0;
 
   for (let i = 0; i < n; i++) {
-    const interArrivalTime = normalDistribution(meanArrival, Math.sqrt(varianceArrival));
+    const interArrivalTime = gammaDistribution(meanArrival, varianceArrival);
     totalIntervalTime += interArrivalTime
     const arrival = arrivalTime + interArrivalTime;
-    const service = gammaDistribution(meanService, varianceService);
+    const service = normalDistribution(meanService, Math.sqrt(varianceService))
     arrivalTime = arrival;
     serviceTime = service;
     totalServiceTime += serviceTime;
@@ -385,6 +385,100 @@ function simulateGG1() {
 
   serverUtilization = ((n-1)/totalIntervalTime)/(n/totalServiceTime);
   document.querySelector('#util').innerHTML += serverUtilization > 1 ?  100 + "%" : Math.round(serverUtilization.toFixed(2)*100) + "%"
+}
+
+// Calculate G/G/2
+function simulateGG2() {
+  meanArrival = Number(document.getElementById('mean-1s').value)
+  meanService = Number(document.getElementById('mean-2s').value)
+  varianceArrival = Number(document.getElementById('variance-1s').value)
+  varianceService = Number(document.getElementById('variance-2s').value) 
+  numberOfEvents = Number(document.getElementById('random-no').value)
+  let arrivalTime = 0;
+  let startTime = 0;
+  let endTime = 0;
+  let turnaroundTime = 0;
+  let waitTime = 0;
+  let responseTime = 0;
+  let serverUtilization = 0;
+  let server1Utilization = 0
+  let server2Utilization = 0
+  let totalServiceTime = 0
+
+   // Initialize variables for the two servers
+   let server1EndTime = 0;
+   let server2EndTime = 0;
+   let server1StartTime = 0;
+   let server2StartTime = 0;
+   let server = ''
+  
+  for (let i = 0; i < numberOfEvents; i++) {
+    const interArrivalTime = gammaDistribution(meanArrival, varianceArrival);
+    const arrival = arrivalTime + interArrivalTime;
+    const serviceTime = normalDistribution(meanService, Math.sqrt(varianceService))
+    totalServiceTime += serviceTime
+    arrivalTime = Math.round(arrival);
+    
+    if(server1EndTime <= arrivalTime){
+      startTime = arrivalTime
+      server1StartTime = arrivalTime
+      server1EndTime = arrivalTime + serviceTime
+      endTime = server1EndTime
+      turnaroundTime = server1EndTime - server1StartTime;
+      waitTime = server1StartTime - arrivalTime;
+      server = 'S1'
+    }
+    else if(server2EndTime <= arrivalTime){
+      server2StartTime = arrivalTime
+      startTime = arrivalTime
+      server2EndTime =  arrivalTime + serviceTime
+      endTime = server2EndTime
+      turnaroundTime = server2EndTime - arrivalTime;
+      waitTime = server2StartTime - arrivalTime;
+      server = 'S2'
+    }
+    else if(arrivalTime < server1EndTime && arrivalTime < server2EndTime){
+      if(server1EndTime <= server2EndTime){
+        server1StartTime =  server1EndTime
+        startTime = server1StartTime
+        server1EndTime = server1EndTime + serviceTime
+        endTime = server1EndTime
+        turnaroundTime = server1EndTime - server1StartTime;
+        waitTime = server1StartTime - arrivalTime;
+        server = 'S1'
+      }
+      else{
+        server2StartTime = server2EndTime
+        startTime = server2StartTime
+        server2EndTime =  server2EndTime + serviceTime
+        endTime = server2EndTime
+        turnaroundTime = server2EndTime - server2StartTime;
+        waitTime = server2StartTime - arrivalTime;
+        server = 'S2'
+      }
+    }
+    responseTime = startTime - arrivalTime;
+    server == 'S1' ? server1Utilization += endTime - startTime : server2Utilization += endTime - startTime
+    
+    let tableRow = document.createElement('tr');
+    tableRow.innerHTML = `
+        <td class="font-semibold border text-center px-2 py-3">${Math.round(arrivalTime)}</td>
+        <td class="font-semibold border text-center px-2 py-3">${Math.round(startTime)}</td>
+        <td class="font-semibold border text-center px-2 py-3">${Math.round(endTime)}</td>
+        <td class="font-semibold border text-center px-2 py-3">${server}</td>
+        <td class="font-semibold border text-center px-2 py-3">${Math.round(serviceTime)}</td>
+        <td class="font-semibold border text-center px-2 py-3">${Math.round(turnaroundTime)}</td>
+        <td class="font-semibold border text-center px-2 py-3">${Math.round(waitTime)}</td>
+        <td class="font-semibold border text-center px-2 py-3">${Math.round(responseTime)}</td>
+    `;
+
+  // Append the table row to the table body
+  document.querySelector('.t-body-2').appendChild(tableRow)
+  }
+  
+  serverUtilization = ((server1Utilization + server2Utilization)/totalServiceTime)*100;
+  console.log(serverUtilization)
+  document.querySelector('#util').innerHTML += serverUtilization.toFixed(0) + "%"
 }
 
 let selectedModel = 'mm1s'
@@ -497,6 +591,9 @@ document.getElementById('calculates').addEventListener('click', () => {
           simulateMG2();
         case 'gg1s':
           simulateGG1();
+          break;
+        case 'gg2s':
+          simulateGG2();
           break;
         default:
           break;
