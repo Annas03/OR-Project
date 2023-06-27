@@ -32,8 +32,8 @@ function simulateMM1() {
   for (let i = 0; i < numberOfEvents; i++) {
     const arrivalCount = poissonDistribution(arrivalRate);
     const interArrivalTime = 1 / arrivalRate;
-    const arrival = Math.round(arrivalTime + arrivalCount * interArrivalTime);
-    const service = Math.round(exponentialDistribution(serviceRate));
+    const arrival = arrivalTime + arrivalCount * interArrivalTime
+    const service = exponentialDistribution(serviceRate);
     arrivalTime = arrival;
     serviceTime = service;
     
@@ -45,22 +45,22 @@ function simulateMM1() {
     
     endTime = startTime + service;
     turnAroundTime = endTime - arrival;
-    waitTime = startTime - arrival;
-    responseTime = startTime - arrivalTime;
+    waitTime = turnAroundTime - serviceTime;
+    responseTime = Math.round(startTime) - Math.round(arrivalTime);
     
     serverUtilization += serviceTime / (endTime - startTime);
 
     let tableRow = document.createElement('tr');
     tableRow.innerHTML = `
-        <td class="font-semibold border text-center px-2 py-3">${arrival}</td>
-        <td class="font-semibold border text-center px-2 py-3">${startTime}</td>
-        <td class="font-semibold border text-center px-2 py-3">${endTime}</td>
-        <td class="font-semibold border text-center px-2 py-3">${serviceTime}</td>
-        <td class="font-semibold border text-center px-2 py-3">${turnAroundTime}</td>
-        <td class="font-semibold border text-center px-2 py-3">${waitTime}</td>
-        <td class="font-semibold border text-center px-2 py-3">${responseTime}</td>
+        <td class="font-semibold border text-center px-2 py-3">${Math.round(arrival)}</td>
+        <td class="font-semibold border text-center px-2 py-3">${Math.round(startTime)}</td>
+        <td class="font-semibold border text-center px-2 py-3">${Math.round(endTime)}</td>
+        <td class="font-semibold border text-center px-2 py-3">${Math.round(serviceTime)}</td>
+        <td class="font-semibold border text-center px-2 py-3">${Math.round(turnAroundTime)}</td>
+        <td class="font-semibold border text-center px-2 py-3">${Math.round(waitTime)}</td>
+        <td class="font-semibold border text-center px-2 py-3">${Math.round(responseTime)}</td>
     `;
-
+ 
   // Append the table row to the table body
   document.querySelector('.t-body-1').appendChild(tableRow)
   }
