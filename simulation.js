@@ -44,7 +44,7 @@ function gammaDistribution(mean, variance) {
   return sum * scale;
 }
 
-function simulateSingleServerQueue(dist){
+function inputFunction(dist){
   if(dist == 'MM1'){
     arrivalRate = Number(document.getElementById('lambdas').value);
     serviceRate = Number(document.getElementById('mews').value);
@@ -61,6 +61,11 @@ function simulateSingleServerQueue(dist){
     varianceService = Number(document.getElementById('variance-2s').value) 
   }
   numberOfEvents = Number(document.getElementById('random-no').value)
+}
+
+function simulateSingleServerQueue(dist){
+  inputFunction(dist)
+
   let arrivalTime = 0;
   let startTime = 0;
   let endTime = 0;
@@ -121,22 +126,8 @@ function simulateSingleServerQueue(dist){
 }
 
 function simulateMultiServerQueue(dist) {
-  if(dist == 'MM2'){
-    arrivalRate = Number(document.getElementById('lambdas').value);
-    serviceRate = Number(document.getElementById('mews').value);
-  }
-  else if(dist == 'MG2'){
-    arrivalRate = Number(document.getElementById('lambdas').value);
-    serviceTimeMin = Number(document.getElementById('mins').value)
-    serviceTimeMax = Number(document.getElementById('maxs').value) 
-  }
-  else{
-    meanArrival = Number(document.getElementById('mean-1s').value)
-    meanService = Number(document.getElementById('mean-2s').value)
-    varianceArrival = Number(document.getElementById('variance-1s').value)
-    varianceService = Number(document.getElementById('variance-2s').value) 
-  }
-  numberOfEvents = Number(document.getElementById('random-no').value)
+  inputFunction(dist)
+
   let arrivalTime = 0;
   let startTime = 0;
   let endTime = 0;
