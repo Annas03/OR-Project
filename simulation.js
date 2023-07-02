@@ -236,6 +236,9 @@ document.getElementById("mm1s").addEventListener('click', () => {
   document.querySelector('#table-2').style.display = 'none'
   selectedModel = 'mm1s'
   document.getElementById("mm1s").style.borderBottom = 'thin solid black'
+  deleteForms()
+  document.querySelector('.t-body-1').innerHTML = ''
+  document.querySelector('.t-body-2').innerHTML = ''
 })
 
 document.getElementById('mm2s').addEventListener('click', () => {
@@ -244,6 +247,9 @@ document.getElementById('mm2s').addEventListener('click', () => {
   document.querySelector('#table-2').style.display = 'block'
   selectedModel = 'mm2s'
   document.getElementById('mm2s').style.borderBottom = 'thin solid black'
+  deleteForms()
+  document.querySelector('.t-body-1').innerHTML = ''
+  document.querySelector('.t-body-2').innerHTML = ''
 })
 
 document.getElementById('mg1s').addEventListener('click', () => {
@@ -252,6 +258,9 @@ document.getElementById('mg1s').addEventListener('click', () => {
   document.querySelector('#table-2').style.display = 'none'
   selectedModel = 'mg1s'
   document.getElementById("mg1s").style.borderBottom = 'thin solid black'
+  deleteForms()
+  document.querySelector('.t-body-1').innerHTML = ''
+  document.querySelector('.t-body-2').innerHTML = ''
 })
 
 document.getElementById('mg2s').addEventListener('click', () => {
@@ -260,6 +269,9 @@ document.getElementById('mg2s').addEventListener('click', () => {
   document.querySelector('#table-2').style.display = 'block'
   selectedModel = 'mg2s'
   document.getElementById("mg2s").style.borderBottom = 'thin solid black'
+  deleteForms()
+  document.querySelector('.t-body-1').innerHTML = ''
+  document.querySelector('.t-body-2').innerHTML = ''
 })
 
 
@@ -269,6 +281,9 @@ document.getElementById('gg1s').addEventListener('click', () => {
   document.querySelector('#table-2').style.display = 'none'
   selectedModel = 'gg1s'
   document.getElementById("gg1s").style.borderBottom = 'thin solid black'
+  deleteForms()
+  document.querySelector('.t-body-1').innerHTML = ''
+  document.querySelector('.t-body-2').innerHTML = ''
 })
 
 document.getElementById('gg2s').addEventListener('click', () => {
@@ -277,6 +292,9 @@ document.getElementById('gg2s').addEventListener('click', () => {
   document.querySelector('#table-2').style.display = 'block'
   selectedModel = 'gg2s'
   document.getElementById("gg2s").style.borderBottom = 'thin solid black'
+  deleteForms()
+  document.querySelector('.t-body-1').innerHTML = ''
+  document.querySelector('.t-body-2').innerHTML = ''
 })
 
 function implementMM(){
@@ -333,9 +351,9 @@ function deleteForms(){
 document.getElementById('mm1s').click()
 
 document.getElementById('calculates').addEventListener('click', () => {
+  document.querySelector('#util').innerHTML = 'Server Utilization: '
   document.querySelector('.t-body-1').innerHTML = ''
   document.querySelector('.t-body-2').innerHTML = ''
-  document.querySelector('#util').innerHTML = 'Server Utilization: '
     switch (selectedModel) {
         case 'mm1s':
           simulateSingleServerQueue('MM1');
@@ -357,5 +375,4 @@ document.getElementById('calculates').addEventListener('click', () => {
         default:
           break;
       }
-      deleteForms()
 })
