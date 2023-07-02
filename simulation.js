@@ -61,8 +61,6 @@ function inputFunction(dist){
     varianceService = Number(document.getElementById('variance-2s').value) 
   }
   numberOfEvents = Number(document.getElementById('random-no').value)
-  console.log('arr-rate ' + arrivalRate)
-  console.log('ser-rate ' + serviceRate)
 }
 
 function simulateSingleServerQueue(dist){
@@ -223,8 +221,8 @@ function simulateMultiServerQueue(dist) {
   document.querySelector('.t-body-2').appendChild(tableRow)
   }
   
-  serverUtilization = ((server1Utilization + server2Utilization)/totalServiceTime)*100;
-  console.log(serverUtilization)
+  // serverUtilization = ((server1Utilization + server2Utilization)/totalServiceTime)*100;
+  // console.log(serverUtilization)
   document.querySelector('#util').innerHTML += "Server1 " +  Math.round((server1Utilization/totalServiceTime)*100).toFixed(0) + "%" + " / " + "Server2 " + Math.round((server2Utilization/totalServiceTime)*100).toFixed(0) + "%"
 }
 
