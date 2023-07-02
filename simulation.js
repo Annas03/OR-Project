@@ -45,11 +45,11 @@ function gammaDistribution(mean, variance) {
 }
 
 function inputFunction(dist){
-  if(dist == 'MM1'){
+  if(dist == 'MM1' || dist == 'MM2'){
     arrivalRate = Number(document.getElementById('lambdas').value);
     serviceRate = Number(document.getElementById('mews').value);
   }
-  else if(dist == 'MG1'){
+  else if(dist == 'MG1' || dist == 'MG2'){
     arrivalRate = Number(document.getElementById('lambdas').value);
     serviceTimeMin = Number(document.getElementById('mins').value)
     serviceTimeMax = Number(document.getElementById('maxs').value) 
@@ -61,6 +61,8 @@ function inputFunction(dist){
     varianceService = Number(document.getElementById('variance-2s').value) 
   }
   numberOfEvents = Number(document.getElementById('random-no').value)
+  console.log('arr-rate ' + arrivalRate)
+  console.log('ser-rate ' + serviceRate)
 }
 
 function simulateSingleServerQueue(dist){
@@ -223,7 +225,7 @@ function simulateMultiServerQueue(dist) {
   
   serverUtilization = ((server1Utilization + server2Utilization)/totalServiceTime)*100;
   console.log(serverUtilization)
-  document.querySelector('#util').innerHTML += serverUtilization.toFixed(0) + "%"
+  document.querySelector('#util').innerHTML += "Server1 " +  Math.round((server1Utilization/totalServiceTime)*100).toFixed(0) + "%" + " / " + "Server2 " + Math.round((server2Utilization/totalServiceTime)*100).toFixed(0) + "%"
 }
 
 let selectedModel = 'mm1s'
@@ -316,6 +318,18 @@ function implementGG(){
   document.querySelector('#util').innerHTML = 'Server Utilization: '
 }
 
+function deleteForms(){
+  document.getElementById('lambdas').value = ''
+  document.getElementById('mews').value = ''
+  document.getElementById('maxs').value = ''
+  document.getElementById('mins').value = ''
+  document.getElementById('mean-1s').value = ''
+  document.getElementById('mean-2s').value = ''
+  document.getElementById('variance-1s').value = ''
+  document.getElementById('variance-2s').value = ''
+  document.getElementById('random-no').value = ''
+}
+
 document.getElementById('mm1s').click()
 
 document.getElementById('calculates').addEventListener('click', () => {
@@ -343,4 +357,5 @@ document.getElementById('calculates').addEventListener('click', () => {
         default:
           break;
       }
+      deleteForms()
 })
