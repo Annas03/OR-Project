@@ -16,7 +16,7 @@ function poissonDistribution(arrivalRate) {
 }
 
 function expDistribution(lambda) {
-  return -Math.log(1 - Math.random()) / lambda;
+  return -(Math.log(1 - Math.random()) / (1/lambda));
 }
 
 function uniformDistribution(min, max) {
@@ -90,17 +90,16 @@ function simulateSingleServerQueue(dist){
     else{
       interArrivalTime = gammaDistribution(meanArrival, varianceArrival);
       service = normalDistribution(meanService, Math.sqrt(varianceService))
-      service < 0 ? service = 0 : service;
     }
-
-    const arrival = arrivalTime + interArrivalTime
+    (service < 0 || Math.round(service) == 0) ? service = 0 : service;
+    const arrival = Math.round(arrivalTime + interArrivalTime)
     arrivalTime = arrival;
-    serviceTime = service;
+    serviceTime = Math.round(service);
     totalIntervalTime +=  interArrivalTime;
     totalServiceTime += serviceTime
     
-    startTime = Math.max(arrival, endTime);
-    endTime = startTime + service;
+    startTime = Math.round(Math.max(arrival, endTime));
+    endTime = Math.round(startTime + service);
 
     turnAroundTime = endTime - arrival;
     waitTime = turnAroundTime - serviceTime;
@@ -108,13 +107,13 @@ function simulateSingleServerQueue(dist){
 
     let tableRow = document.createElement('tr');
     tableRow.innerHTML = `
-        <td class="font-semibold border text-center px-2 py-3">${Math.round(arrival)}</td>
-        <td class="font-semibold border text-center px-2 py-3">${Math.round(startTime)}</td>
-        <td class="font-semibold border text-center px-2 py-3">${Math.round(endTime)}</td>
-        <td class="font-semibold border text-center px-2 py-3">${Math.round(serviceTime)}</td>
-        <td class="font-semibold border text-center px-2 py-3">${Math.round(turnAroundTime)}</td>
-        <td class="font-semibold border text-center px-2 py-3">${Math.round(waitTime)}</td>
-        <td class="font-semibold border text-center px-2 py-3">${Math.round(responseTime)}</td>
+        <td class="font-semibold border text-center px-2 py-3">${arrival}</td>
+        <td class="font-semibold border text-center px-2 py-3">${startTime}</td>
+        <td class="font-semibold border text-center px-2 py-3">${endTime}</td>
+        <td class="font-semibold border text-center px-2 py-3">${serviceTime}</td>
+        <td class="font-semibold border text-center px-2 py-3">${turnAroundTime}</td>
+        <td class="font-semibold border text-center px-2 py-3">${waitTime}</td>
+        <td class="font-semibold border text-center px-2 py-3">${responseTime}</td>
     `;
  
   // Append the table row to the table body
@@ -122,7 +121,7 @@ function simulateSingleServerQueue(dist){
   }
   
   serverUtilization = ((numberOfEvents-1)/totalIntervalTime)/(numberOfEvents/totalServiceTime);
-  document.querySelector('#util').innerHTML += serverUtilization > 1 ?  100 + "%" : Math.round(serverUtilization.toFixed(2)*100) + "%"
+  document.querySelector('#util').innerHTML += Math.round(serverUtilization.toFixed(2)*100) + "%"
 }
 
 function simulateMultiServerQueue(dist) {
