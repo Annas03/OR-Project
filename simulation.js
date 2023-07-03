@@ -306,6 +306,9 @@ function implementMM(){
   document.getElementById('variance-2s').style.display = 'none'
   document.getElementById(selectedModel).style.borderBottom = 'none'
   document.querySelector('#util').innerHTML = 'Server Utilization: '
+  document.getElementById('mm-text').style.display = 'block'
+  document.getElementById('mg-text').style.display = 'none'
+  document.getElementById('gg-text').style.display = 'none'
 }
 
 function implementMG(){
@@ -319,6 +322,9 @@ function implementMG(){
   document.getElementById('variance-2s').style.display = 'none'
   document.getElementById(selectedModel).style.borderBottom = 'none'
   document.querySelector('#util').innerHTML = 'Server Utilization: '
+  document.getElementById('mm-text').style.display = 'none'
+  document.getElementById('mg-text').style.display = 'block'
+  document.getElementById('gg-text').style.display = 'none'
 }
 
 function implementGG(){
@@ -332,6 +338,9 @@ function implementGG(){
   document.getElementById('lambdas').style.display = 'none'
   document.getElementById(selectedModel).style.borderBottom = 'none'
   document.querySelector('#util').innerHTML = 'Server Utilization: '
+  document.getElementById('mm-text').style.display = 'none'
+  document.getElementById('mg-text').style.display = 'none'
+  document.getElementById('gg-text').style.display = 'block'
 }
 
 function deleteForms(){
